@@ -6,8 +6,6 @@ set -o pipefail
 # set -o xtrace
 
 installation_1 () {
-    sudo apt-get update
-    sudo apt-get upgrade
     sudo apt-get install python-virtualenv
     sudo apt-get install python3-pip
     sudo apt-get install git
@@ -66,7 +64,7 @@ fi
 # Change directory from the root and into the healthcheck app
 cd ~/healthcheckapp
 
-if [[ ! -f "hc-venv" && $valid_option = 2 ]];then
+if [[ ! -d "hc-venv" && $valid_option = 2 ]];then
     virtualenv --python=python2 hc-venv
 else
     virtualenv --python=python3 hc-venv
@@ -78,7 +76,7 @@ source "${VENV_ROOT}"
 
 if [[ ! -d "healthchecks" ]];then 
 # Clone the repo into the virtual machine 
-    git clone https://github.com/healthchecks/healthchecks.git
+    git clone https://github.com/WinstonKamau/healthchecks.git
 fi
 
 # Install requirements for the machine
@@ -123,4 +121,4 @@ if [[ $answer = "yes" ]];then
 fi
 
 # run the django server
-./manage.py runserver
+./manage.py runserver 0.0.0.0:8000
