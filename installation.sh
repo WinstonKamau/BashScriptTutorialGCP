@@ -40,13 +40,32 @@ repository_installation () {
 }
 
 set_env_database () {
-    cp .env.sample .env
+    echo -n "Do you wish to set your database environment variables (Y/N) ?"
+
+    answer=
+
+    while [[ ! $answer ]];do
+        read -r -n 1 answer_argument
+        if [[ $answer_argument = [Yy] ]];then
+            answer="yes"
+        elif [[ $answer_argument = [Nn] ]];then
+            answer="no"
+            printf "\nYou can change the database environment variables by changing the values set on the .env file "
+        else
+            printf "\nEnter \"y'\" for \"Yes\" and \"n\" for \"No\". Answer?"
+        fi
+    done
+
+if [[ $answer = "yes" ]];then
+    printf "\n"
     read -p "Insert the name of your database: " db_name
     read -p "Insert the username to your database " db_user
     read -s -p "Insert the password to your database: " db_password
     sed -i -e '2s/.*/'DB_NAME=${db_name}'/g' .env
     sed -i -e '4s/.*/'DB_USER=${db_user}'/g' .env
-    sed -i -e '5s/.*/'DB_PASSWORD=${db_password}'/g' .env
+    sed -i -e '5s/.*/'DB_PASSWORD=${db_password}'/g' .env 
+fi
+
 }
 
 platform_check () {
@@ -60,8 +79,8 @@ platform_check () {
 }
 
 main () {
-    platform_check
-    dependencies_installation
+    # platform_check
+    # dependencies_installation
     repository_installation
     set_env_database
 }
