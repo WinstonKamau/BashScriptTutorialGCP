@@ -79,8 +79,8 @@ platform_check () {
 }
 
 main () {
-    # platform_check
-    # dependencies_installation
+    platform_check
+    dependencies_installation
     repository_installation
     set_env_database
 }
